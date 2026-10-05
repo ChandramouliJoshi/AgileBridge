@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task or issue within the TaskFlow project management system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the task."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the task (e.g., To Do, In Progress, Done)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "The date and time the task was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "The date and time the task was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/tasks/{taskId}",
+        "definition": {
+          "entityName": "Task",
+          "schema": {
+            "$ref": "#/backend/entities/Task"
+          },
+          "description": "Stores task information. Open access to all authenticated users.",
+          "params": [
+            {
+              "name": "taskId",
+              "description": "The unique identifier for the task."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to be simple and scalable. Since only task management functionality is requested, a single collection `tasks` is used, with each task document containing all necessary information. No subcollections are used in this simplified design. Access is open to all authenticated users, suitable for a basic task tracking app. For enhanced security in a real-world application, access control lists and more complex role-based authorization would be added. Tasks are placed under a single collection without any parent-child relationship."
+  }
+}
